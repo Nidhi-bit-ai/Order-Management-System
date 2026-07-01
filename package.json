@@ -1,0 +1,22 @@
+{
+  "name": "order-management-system",
+  "version": "1.0.0",
+  "private": true,
+
+  "workspaces": [
+    "gateway",
+    "services/*",
+    "packages/*"
+  ],
+
+  "scripts": {
+    "gateway": "npm run dev --workspace gateway",
+    "auth": "npm run dev --workspace auth-service",
+    "order": "npm run dev --workspace order-service",
+    "inventory": "npm run dev --workspace inventory-service",
+    "shipment": "npm run dev --workspace shipment-service",
+    "analytics": "npm run dev --workspace analytics-service",
+    "notification": "npm run dev --workspace notification-service",
+    "sync": "npm run dev --workspace sync-service"
+  }
+}
