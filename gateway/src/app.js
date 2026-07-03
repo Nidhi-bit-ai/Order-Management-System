@@ -1,23 +1,59 @@
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const morgan = require("morgan");
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
 
-const routes = require("./routes");
+dotenv.config();
+
+import authRoutes from "./routes/auth.routes.js";
+import orderRoutes from "./routes/order.routes.js";
+import inventoryRoutes from "./routes/inventory.routes.js";
+import shipmentRoutes from "./routes/shipment.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
+import syncRoutes from "./routes/sync.routes.js";
+
+import gatewayAuth from "./middleware/gatewayAuth.js";
+import notFound from "./middleware/notFound.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
-app.use((req, res, next) => {
-    console.log("Gateway:", req.method, req.originalUrl);
-    next();
-});
+
+app.use(cors());
+app.use(helmet());
+app.use(morgan("dev"));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(helmet());
-app.use(cors());
-app.use(morgan("dev"));
+app.get("/health", (req, res) => {
+  res.json({
+    status: "UP",
+    service: "API Gateway",
+  });
+});
 
-// 👉 ALL ROUTES GO THROUGH /api
-app.use("/api", routes);
+/**
+ * =========================
+ * PUBLIC ROUTES
+ * =========================
+ */
+app.use("/api", authRoutes);
 
-module.exports = app;
+/**
+ * =========================
+ * JWT PROTECTED ROUTES
+ * =========================
+ */
+app.use(gatewayAuth);
+
+app.use("/api", orderRoutes);
+app.use("/api", inventoryRoutes);
+app.use("/api", shipmentRoutes);
+app.use("/api", notificationRoutes);
+app.use("/api", syncRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
+
+export default app;

@@ -1,14 +1,14 @@
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
 
-const app = require("./app");
-const connectDB = require("./config/db");
+import app from "./app.js";
+import { connectDB } from "./config/db.js";
 
 // Connect Database FIRST
-connectDB();
+await connectDB();
 
 const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
-  console.log(`Auth Service running on port ${PORT}`);
+  console.log(`🚀 Auth Service running on port ${PORT}`);
 });

@@ -1,8 +1,8 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 const authMiddleware = (req, res, next) => {
   try {
-    // Get token from header
+    // Get token from Authorization header
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -11,7 +11,7 @@ const authMiddleware = (req, res, next) => {
       });
     }
 
-    // Format: Bearer token
+    // Expected format: Bearer <token>
     const token = authHeader.split(" ")[1];
 
     if (!token) {
@@ -20,10 +20,10 @@ const authMiddleware = (req, res, next) => {
       });
     }
 
-    // Verify token
+    // Verify JWT
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Attach user to request
+    // Attach decoded user info to request
     req.user = decoded;
 
     next();
@@ -35,4 +35,4 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

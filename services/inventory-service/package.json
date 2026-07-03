@@ -1,12 +1,21 @@
 {
   "name": "inventory-service",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.7.3",
+    "dotenv": "^17.4.2",
+    "cors": "^2.8.6",
+    "kafkajs": "^2.2.4",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
 }

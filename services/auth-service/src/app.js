@@ -1,10 +1,10 @@
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const morgan = require("morgan");
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
 
-const authRoutes = require("./routes/auth.routes");
-const userRoutes = require("./routes/user.routes");
+import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 const app = express();
 
@@ -15,13 +15,17 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan("dev"));
 
-// 👉 SAME PREFIX AS GATEWAY TARGET
+// Same prefix as Gateway target
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 
 // Health check
 app.get("/health", (req, res) => {
-  res.json({ message: "Auth Service is running" });
+  res.status(200).json({
+    status: "UP",
+    service: "Auth Service",
+    timestamp: new Date().toISOString(),
+  });
 });
 
-module.exports = app;
+export default app;
