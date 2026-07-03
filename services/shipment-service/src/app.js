@@ -19,10 +19,11 @@ app.use(express.json());
  * HEALTH CHECK
  * =========================
  */
-app.get("/", (req, res) => {
-  res.json({
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "UP",
     service: "Shipment Service",
-    status: "Running",
+    timestamp: new Date().toISOString(),
   });
 });
 

@@ -1,7 +1,7 @@
-const express = require("express");
-const router = express.Router();
+import express from "express";
+import authMiddleware from "../middleware/auth.middleware.js";
 
-const authMiddleware = require("../middleware/auth.middleware");
+const router = express.Router();
 
 // Protected route
 router.get("/profile", authMiddleware, (req, res) => {
@@ -11,4 +11,4 @@ router.get("/profile", authMiddleware, (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

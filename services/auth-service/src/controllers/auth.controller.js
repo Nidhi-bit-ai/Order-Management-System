@@ -1,26 +1,27 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
 // ==========================
 // REGISTER USER
 // ==========================
-const register = async (req, res) => {
+export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // check if user already exists
+    // Check if user already exists
     const existingUser = await User.findOne({ email });
+
     if (existingUser) {
       return res.status(400).json({
         message: "User already exists",
       });
     }
 
-    // hash password
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // create user
+    // Create user
     const user = await User.create({
       name,
       email,
@@ -46,31 +47,38 @@ const register = async (req, res) => {
 // ==========================
 // LOGIN USER
 // ==========================
-const login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // check if user exists
+    // Check if user exists
     const user = await User.findOne({ email });
+
     if (!user) {
       return res.status(400).json({
         message: "Invalid credentials",
       });
     }
 
-    // compare password
+    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
+
     if (!isMatch) {
       return res.status(400).json({
         message: "Invalid credentials",
       });
     }
 
-    // generate JWT token
+    // Generate JWT
     const token = jwt.sign(
-      { id: user._id, email: user.email },
+      {
+        id: user._id,
+        email: user.email,
+      },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      }
     );
 
     res.status(200).json({
@@ -88,9 +96,4 @@ const login = async (req, res) => {
       error: error.message,
     });
   }
-};
-
-module.exports = {
-  register,
-  login,
 };

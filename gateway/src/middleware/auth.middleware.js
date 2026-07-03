@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
-const gatewayAuth = (req, res, next) => {
+export const gatewayAuth = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
@@ -26,5 +26,3 @@ const gatewayAuth = (req, res, next) => {
     });
   }
 };
-
-module.exports = gatewayAuth;

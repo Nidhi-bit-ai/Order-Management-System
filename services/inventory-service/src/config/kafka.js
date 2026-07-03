@@ -10,5 +10,5 @@ dotenv.config();
  */
 export const kafka = new Kafka({
   clientId: "inventory-service",
-  brokers: [process.env.KAFKA_BROKERs],
+  brokers: [process.env.KAFKA_BROKERS],
 });

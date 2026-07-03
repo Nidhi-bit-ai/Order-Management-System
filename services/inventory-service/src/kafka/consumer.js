@@ -20,23 +20,23 @@ export const initConsumer = async () => {
   });
 
   await consumer.run({
-    eachMessage: async ({ topic, message }) => {
-        const event = JSON.parse(message.value.toString());
-        const order = event.data;
+  eachMessage: async ({ topic, message }) => {
+    const event = JSON.parse(message.value.toString());
+    const order = event.data;
 
-        /**
-         * ORDER CREATED
-         */
-        if (topic === "order.created") {
-        await reserveStock(order);
-        }
+    /**
+     * ORDER CREATED
+     */
+    if (topic === "order.created") {
+      await reserveStock(order);
+    }
 
-        /**
-         * ORDER CANCELLED
-         */
-        if (topic === "order.cancelled") {
-        await releaseStock(order);
-        }
-    },
-    });
+    /**
+     * ORDER CANCELLED
+     */
+    if (topic === "order.cancelled") {
+      await releaseStock(order);
+    }
+  },
+});
 };

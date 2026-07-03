@@ -1,15 +1,18 @@
-const express = require("express");
-const { createProxyMiddleware } = require("http-proxy-middleware");
+import express from "express";
+import axios from "axios";
 
 const router = express.Router();
-console.log("Routes file loaded");
+
+console.log("Auth routes loaded");
+
+// =========================
 // AUTH SERVICE
-const axios = require("axios");
+// =========================
 
 router.post("/auth/register", async (req, res) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:5001/api/auth/register",
+      "http://localhost:5001/api/auth/register",
       req.body
     );
 
@@ -22,10 +25,11 @@ router.post("/auth/register", async (req, res) => {
     );
   }
 });
+
 router.post("/auth/login", async (req, res) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:5001/api/auth/login",
+      "http://localhost:5001/api/auth/login",
       req.body
     );
 
@@ -39,11 +43,14 @@ router.post("/auth/login", async (req, res) => {
   }
 });
 
-// USER ROUTES
+// =========================
+// USER SERVICE
+// =========================
+
 router.get("/user/profile", async (req, res) => {
   try {
     const response = await axios.get(
-      "http://127.0.0.1:5001/api/user/profile",
+      "http://localhost:5001/api/user/profile",
       {
         headers: req.headers,
       }
@@ -57,4 +64,4 @@ router.get("/user/profile", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

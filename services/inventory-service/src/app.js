@@ -14,4 +14,12 @@ app.use(express.json());
  */
 app.use("/api/v1/inventory", inventoryRoutes);
 
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "UP",
+    service: "Inventory Service",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 export default app;

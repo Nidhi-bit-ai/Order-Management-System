@@ -7,10 +7,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.json({ service: "Notification Service Running" });
-});
 
 app.use("/api/v1/notifications", notificationRoutes);
+
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "UP",
+    service: "Notification Service",
+    timestamp: new Date().toISOString(),
+  });
+});
 
 export default app;
