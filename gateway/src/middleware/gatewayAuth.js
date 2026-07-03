@@ -1,19 +1,25 @@
 import jwt from "jsonwebtoken";
 
-export const gatewayAuth = (req, res, next) => {
+const gatewayAuth = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-      return res.status(401).json({ message: "No token provided" });
+      return res.status(401).json({
+        success: false,
+        message: "No token provided",
+      });
     }
 
     const token = authHeader.split(" ")[1];
 
     if (!token) {
-      return res.status(401).json({ message: "Invalid token format" });
+      return res.status(401).json({
+        success: false,
+        message: "Invalid token format",
+      });
     }
-
+    console.log(process.env.JWT_SECRET);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     req.user = decoded;
@@ -21,8 +27,11 @@ export const gatewayAuth = (req, res, next) => {
     next();
   } catch (error) {
     return res.status(401).json({
-      message: "Unauthorized from gateway",
+      success: false,
+      message: "Unauthorized",
       error: error.message,
     });
   }
 };
+
+export default gatewayAuth;
