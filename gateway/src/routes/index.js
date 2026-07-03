@@ -10,10 +10,10 @@ import syncRoutes from "./sync.routes.js";
 const router = express.Router();
 
 router.use(authRoutes);
-router.use("/orders", orderRoutes);
-router.use("/inventory", inventoryRoutes);
-router.use("/shipment", shipmentRoutes);
-router.use("/notification", notificationRoutes);
-router.use("/sync", syncRoutes);
+router.use(orderRoutes);
+router.use(inventoryRoutes);
+router.use(shipmentRoutes);
+router.use( notificationRoutes);
+router.use(syncRoutes);
 
 export default router;

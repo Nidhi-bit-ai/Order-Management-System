@@ -4,55 +4,56 @@ import { forwardRequest } from "../utils/httpClient.js";
 
 const router = express.Router();
 
-// CREATE ORDER
-router.post("/", async (req, res) => {
+// Create Order
+router.post("/orders", async (req, res) => {
   try {
     const response = await forwardRequest(
       `${SERVICES.ORDER}/api/v1/orders`,
       req
     );
-    res.status(response.status).json(response.data);
+
+    return res.status(response.status).json(response.data);
   } catch (err) {
-    res.status(err.response?.status || 500).json(err.response?.data);
+    console.error("Gateway Order Error:", err.message);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to connect to Order Service",
+    });
   }
 });
 
-// GET ALL ORDERS
-router.get("/", async (req, res) => {
+// Get All Orders
+router.get("/orders", async (req, res) => {
   try {
     const response = await forwardRequest(
       `${SERVICES.ORDER}/api/v1/orders`,
       req
     );
-    res.status(response.status).json(response.data);
+
+    return res.status(response.status).json(response.data);
   } catch (err) {
-    res.status(err.response?.status || 500).json(err.response?.data);
+    return res.status(500).json({
+      success: false,
+      message: "Unable to connect to Order Service",
+    });
   }
 });
 
-// GET ORDER BY ID
-router.get("/:orderId", async (req, res) => {
+// Get Order By ID
+router.get("/orders/:orderId", async (req, res) => {
   try {
     const response = await forwardRequest(
       `${SERVICES.ORDER}/api/v1/orders/${req.params.orderId}`,
       req
     );
-    res.status(response.status).json(response.data);
-  } catch (err) {
-    res.status(err.response?.status || 500).json(err.response?.data);
-  }
-});
 
-// CANCEL ORDER
-router.put("/:orderId/cancel", async (req, res) => {
-  try {
-    const response = await forwardRequest(
-      `${SERVICES.ORDER}/api/v1/orders/${req.params.orderId}/cancel`,
-      req
-    );
-    res.status(response.status).json(response.data);
+    return res.status(response.status).json(response.data);
   } catch (err) {
-    res.status(err.response?.status || 500).json(err.response?.data);
+    return res.status(500).json({
+      success: false,
+      message: "Unable to connect to Order Service",
+    });
   }
 });
 
