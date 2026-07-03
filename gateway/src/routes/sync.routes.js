@@ -4,15 +4,28 @@ import { forwardRequest } from "../utils/httpClient.js";
 
 const router = express.Router();
 
-router.use(async (req, res) => {
+/**
+ * =========================
+ * SYNC ORDER
+ * =========================
+ */
+router.post("/sync/order", async (req, res) => {
   try {
     const response = await forwardRequest(
-      `${SERVICES.SYNC}/api/v1/sync${req.url}`,
+      `${SERVICES.SYNC}/api/v1/sync/order`,
       req
     );
-    res.status(response.status).json(response.data);
+
+    return res.status(response.status).json(response.data);
   } catch (err) {
-    res.status(err.response?.status || 500).json(err.response?.data);
+    console.error("Sync Service Error:", err.message);
+
+    return res.status(err.response?.status || 500).json(
+      err.response?.data || {
+        success: false,
+        message: "Unable to connect to Sync Service",
+      }
+    );
   }
 });
 

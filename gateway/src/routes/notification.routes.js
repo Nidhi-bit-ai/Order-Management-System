@@ -4,15 +4,53 @@ import { forwardRequest } from "../utils/httpClient.js";
 
 const router = express.Router();
 
-router.use(async (req, res) => {
+/**
+ * =========================
+ * GET ALL NOTIFICATIONS
+ * =========================
+ */
+router.get("/notification", async (req, res) => {
   try {
     const response = await forwardRequest(
-      `${SERVICES.NOTIFICATION}/api/v1/notification${req.url}`,
+      `${SERVICES.NOTIFICATION}/api/v1/notifications`,
       req
     );
-    res.status(response.status).json(response.data);
+
+    return res.status(response.status).json(response.data);
   } catch (err) {
-    res.status(err.response?.status || 500).json(err.response?.data);
+    console.error("Notification Service Error:", err.message);
+
+    return res.status(err.response?.status || 500).json(
+      err.response?.data || {
+        success: false,
+        message: "Unable to connect to Notification Service",
+      }
+    );
+  }
+});
+
+/**
+ * =========================
+ * MARK NOTIFICATION AS READ
+ * =========================
+ */
+router.put("/notification/:id/read", async (req, res) => {
+  try {
+    const response = await forwardRequest(
+      `${SERVICES.NOTIFICATION}/api/v1/notifications/${req.params.id}/read`,
+      req
+    );
+
+    return res.status(response.status).json(response.data);
+  } catch (err) {
+    console.error("Notification Service Error:", err.message);
+
+    return res.status(err.response?.status || 500).json(
+      err.response?.data || {
+        success: false,
+        message: "Unable to connect to Notification Service",
+      }
+    );
   }
 });
 
