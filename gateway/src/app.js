@@ -4,41 +4,34 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 import routes from "./routes/index.js";
+import notFound from "./middleware/notFound.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
 
-// =========================
-// LOGGER MIDDLEWARE
-// =========================
-app.use((req, res, next) => {
-    console.log("Gateway:", req.method, req.originalUrl);
-    next();
-});
+// Middlewares
+app.use(cors());
+app.use(helmet());
+app.use(morgan("dev"));
 
-// =========================
-// HEALTH CHECK
-// =========================
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Health Check
 app.get("/health", (req, res) => {
   res.status(200).json({
+    success: true,
+    service: "API Gateway",
     status: "UP",
-    service: "Gateway Service",
     timestamp: new Date().toISOString(),
   });
 });
 
-// =========================
-// CORE MIDDLEWARES
-// =========================
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use(helmet());
-app.use(cors());
-app.use(morgan("dev"));
-
-// =========================
-// ROUTES
-// =========================
+// API Routes
 app.use("/api", routes);
+
+// Error Handling
+app.use(notFound);
+app.use(errorHandler);
 
 export default app;

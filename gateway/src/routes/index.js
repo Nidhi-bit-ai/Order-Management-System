@@ -1,67 +1,19 @@
 import express from "express";
-import axios from "axios";
+
+import authRoutes from "./auth.routes.js";
+import orderRoutes from "./order.routes.js";
+import inventoryRoutes from "./inventory.routes.js";
+import shipmentRoutes from "./shipment.routes.js";
+import notificationRoutes from "./notification.routes.js";
+import syncRoutes from "./sync.routes.js";
 
 const router = express.Router();
 
-console.log("Auth routes loaded");
-
-// =========================
-// AUTH SERVICE
-// =========================
-
-router.post("/auth/register", async (req, res) => {
-  try {
-    const response = await axios.post(
-      "http://localhost:5001/api/auth/register",
-      req.body
-    );
-
-    res.status(response.status).json(response.data);
-  } catch (err) {
-    console.error(err.response?.data || err.message);
-
-    res.status(err.response?.status || 500).json(
-      err.response?.data || { error: err.message }
-    );
-  }
-});
-
-router.post("/auth/login", async (req, res) => {
-  try {
-    const response = await axios.post(
-      "http://localhost:5001/api/auth/login",
-      req.body
-    );
-
-    res.status(response.status).json(response.data);
-  } catch (err) {
-    console.error(err.response?.data || err.message);
-
-    res.status(err.response?.status || 500).json(
-      err.response?.data || { error: err.message }
-    );
-  }
-});
-
-// =========================
-// USER SERVICE
-// =========================
-
-router.get("/user/profile", async (req, res) => {
-  try {
-    const response = await axios.get(
-      "http://localhost:5001/api/user/profile",
-      {
-        headers: req.headers,
-      }
-    );
-
-    res.status(response.status).json(response.data);
-  } catch (err) {
-    res.status(err.response?.status || 500).json(
-      err.response?.data || { error: err.message }
-    );
-  }
-});
+router.use(authRoutes);
+router.use("/orders", orderRoutes);
+router.use("/inventory", inventoryRoutes);
+router.use("/shipment", shipmentRoutes);
+router.use("/notification", notificationRoutes);
+router.use("/sync", syncRoutes);
 
 export default router;
