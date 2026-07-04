@@ -49,9 +49,8 @@ const orderSchema = new mongoose.Schema(
 
     // External order id received from external website
     externalOrderId: {
-        type: String,
-        unique: true,
-        sparse: true,
+      type: String,
+      default: undefined,
     },
     // Customer details coming from Sync Service / external system
     customerId: {
@@ -141,7 +140,15 @@ const orderSchema = new mongoose.Schema(
 orderSchema.index({ orderId: 1 });
 orderSchema.index({ customerId: 1, createdAt: -1 });
 orderSchema.index({ status: 1 });
-orderSchema.index({ externalOrderId: 1 });
+orderSchema.index(
+  { externalOrderId: 1 },
+  {
+    unique: true,
+    partialFilterExpression: {
+      externalOrderId: { $exists: true }
+    }
+  }
+);
 /**
  * =========================
  * EXPORT MODEL
