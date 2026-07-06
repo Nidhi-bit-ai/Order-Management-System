@@ -10,7 +10,7 @@ export const env = {
 
   KAFKA: {
     CLIENT_ID: process.env.KAFKA_CLIENT_ID,
-    BROKERS: process.env.KAFKA_BROKERS?.split(",") || ["localhost:9092"],
+    BROKER: process.env.KAFKA_BROKER?.split(",") || ["localhost:9092"],
     GROUP_ID: process.env.KAFKA_GROUP_ID,
   },
 

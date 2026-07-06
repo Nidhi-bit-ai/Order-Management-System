@@ -15,24 +15,34 @@ services:
     volumes:
       - mongodb-data:/data/db
 
+    networks:
+      - oms-network
+    
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   mongo-express:
     image: mongo-express
     container_name: oms-mongo-express
+
     restart: unless-stopped
 
     ports:
       - "8081:8081"
 
     environment:
-
-      ME_CONFIG_MONGODB_URL: "mongodb://admin:password@mongodb:27017/"
+      ME_CONFIG_MONGODB_URL: mongodb://admin:password@mongodb:27017/
       ME_CONFIG_BASICAUTH: "false"
-      # ME_CONFIG_MONGODB_ADMINUSERNAME: ""
-      # ME_CONFIG_MONGODB_ADMINPASSWORD: ""
-      # ME_CONFIG_MONGODB_SERVER: mongodb
 
     depends_on:
-      - mongodb
+        mongodb:
+          condition: service_healthy
+
+    networks:
+      - oms-network
 
   kafka:
     image: apache/kafka:4.0.0
@@ -46,12 +56,19 @@ services:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
       KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+
+    networks:
+      - oms-network
+
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
@@ -65,5 +82,159 @@ services:
       KAFKA_CLUSTERS_0_NAME: OMS-Kafka
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
 
+    networks:
+      - oms-network
+
+    depends_on:
+      - kafka
+
+    
+  kafka-init:
+    build:
+      context: ./infrastructure/kafka-init
+
+    restart: "no"
+
+    environment:
+      KAFKA_BROKER: kafka:9092
+
+    depends_on:
+      - kafka
+
+    networks:
+      - oms-network
+
+  inventory-service:
+    build:
+      context: ./services/inventory-service
+
+    container_name: oms-inventory-service
+
+    ports:
+      - "5002:5002"
+
+    env_file:
+      - ./services/inventory-service/.env
+
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+
+    networks:
+      - oms-network
+
+  order-service:
+    build:
+      context: ./services/order-service
+    container_name: oms-order-service
+    restart: unless-stopped
+
+    env_file:
+      - ./services/order-service/.env
+
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+
+    networks:
+      - oms-network
+
+    ports:
+      - "5003:5003"
+
+
+  shipment-service:
+    build:
+      context: ./services/shipment-service
+
+    container_name: oms-shipment-service
+
+    env_file:
+      - ./services/shipment-service/.env
+
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+
+    ports:
+      - "5004:5004"
+
+    networks:
+      - oms-network
+
+
+  notification-service:
+    build:
+      context: ./services/notification-service
+
+    container_name: oms-notification-service
+    restart: unless-stopped
+
+    ports:
+      - "5005:5005"
+
+    env_file:
+      - ./services/notification-service/.env
+
+    depends_on:
+      - kafka
+
+    networks:
+      - oms-network
+
+
+  sync-service:
+    build:
+      context: ./services/sync-service
+
+    container_name: oms-sync-service
+    restart: unless-stopped
+
+    ports:
+      - "5006:5006"
+
+    env_file:
+      - ./services/sync-service/.env
+
+    depends_on:
+      - kafka
+      - mongodb
+
+    networks:
+      - oms-network
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+
+    container_name: oms-auth-service
+
+    restart: unless-stopped
+
+    ports:
+      - "5001:5001"
+
+    env_file:
+      - ./services/auth-service/.env
+
+    depends_on:
+      - mongodb
+
+    networks:
+      - oms-network
+
+
+networks:
+  oms-network:
+    driver: bridge
+
+
 volumes:
   mongodb-data:
+  kafka-data:

@@ -5,7 +5,7 @@ import { logger } from "./logger.js";
 // Create Kafka instance
 export const kafka = new Kafka({
   clientId: env.KAFKA.CLIENT_ID,
-  brokers: env.KAFKA.BROKERS,
+  brokers: env.KAFKA.BROKER,
 });
 
 // Producer

@@ -3,7 +3,7 @@ import { createNotification } from "../services/notification.service.js";
 import { getRecipients } from "../utils/router.js";
 
 export const initConsumer = async () => {
-  const consumer = kafka.consumer({ groupId: "notification-service" });
+  const consumer = kafka.consumer({ groupId: process.env.KAFKA_GROUP_ID });
 
   await consumer.connect();
   console.log("📥 Notification Consumer connected");
