@@ -39,7 +39,7 @@ const menuItems = [
     icon: BarChart3,
   },
   {
-    name: "Sync Monitor",
+    name: "Website Orders",
     path: "/sync-monitor",
     icon: RefreshCw,
   },

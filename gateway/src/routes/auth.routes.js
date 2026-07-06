@@ -42,4 +42,23 @@ router.post("/auth/login", async (req, res) => {
   }
 });
 
+// Change Password
+router.put("/auth/change-password", async (req, res) => {
+  try {
+    const response = await forwardRequest(
+      `${SERVICES.AUTH}/api/auth/change-password`,
+      req
+    );
+
+    return res.status(response.status).json(response.data);
+  } catch (err) {
+    console.error("Gateway Change Password Error:", err.message);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to connect to Auth Service",
+    });
+  }
+});
+
 export default router;

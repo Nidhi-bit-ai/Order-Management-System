@@ -30,7 +30,7 @@ function AppRoutes() {
         }
       >
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/products" element={<Products />} />
+        <Route path="/products" element={<Products/>} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/shipments" element={<Shipments />} />
         <Route path="/sync-monitor" element={<SyncMonitor />} />

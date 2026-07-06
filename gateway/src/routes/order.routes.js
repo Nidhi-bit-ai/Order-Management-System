@@ -57,4 +57,23 @@ router.get("/orders/:orderId", async (req, res) => {
   }
 });
 
+// Cancel Order
+router.put("/orders/:orderId/cancel", async (req, res) => {
+  try {
+    const response = await forwardRequest(
+      `${SERVICES.ORDER}/api/v1/orders/${req.params.orderId}/cancel`,
+      req
+    );
+
+    return res.status(response.status).json(response.data);
+  } catch (err) {
+    console.error("Gateway Cancel Order Error:", err.message);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to connect to Order Service",
+    });
+  }
+});
+
 export default router;

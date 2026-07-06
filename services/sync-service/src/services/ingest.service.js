@@ -66,3 +66,14 @@ export const ingestOrder = async (externalOrder) => {
         throw err;
     }
 };
+
+/**
+ * =========================
+ * GET SYNC LOGS
+ * =========================
+ */
+export const getSyncLogs = async () => {
+  return await SyncLog.find()
+    .sort({ createdAt: -1 })
+    .lean();
+};

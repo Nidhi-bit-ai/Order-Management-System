@@ -1,25 +1,6 @@
-const orders = [
-  {
-    id: "ORD001",
-    customer: "Rahul Sharma",
-    status: "Delivered",
-    amount: "₹1200",
-  },
-  {
-    id: "ORD002",
-    customer: "Aman Gupta",
-    status: "Pending",
-    amount: "₹850",
-  },
-  {
-    id: "ORD003",
-    customer: "Neha Verma",
-    status: "Shipped",
-    amount: "₹950",
-  },
-];
 
-function RecentOrdersTable() {
+
+function RecentOrdersTable({ orders }) {
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
       <h2 className="text-xl font-semibold mb-4">
@@ -37,20 +18,44 @@ function RecentOrdersTable() {
         </thead>
 
         <tbody>
-          {orders.map((order) => (
-            <tr
-              key={order.id}
-              className="border-b hover:bg-gray-50"
-            >
-              <td className="py-3">{order.id}</td>
+          {orders
+            .sort(
+              (a, b) =>
+                new Date(b.createdAt) -
+                new Date(a.createdAt)
+            )
+            .slice(0, 5)
+            .map((order) => (
+              <tr
+                key={order.orderId}
+                className="border-b hover:bg-gray-50"
+              >
+                <td className="py-3 font-medium">
+                  {order.orderId}
+                </td>
 
-              <td>{order.customer}</td>
+                <td>{order.customerId}</td>
 
-              <td>{order.status}</td>
+                <td>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium
+                      ${
+                        order.status === "DELIVERED"
+                          ? "bg-green-100 text-green-700"
+                          : order.status === "CREATED"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : order.status === "CANCELLED"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-blue-100 text-blue-700"
+                      }`}
+                  >
+                    {order.status}
+                  </span>
+                </td>
 
-              <td>{order.amount}</td>
-            </tr>
-          ))}
+                <td>₹{order.totalAmount}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

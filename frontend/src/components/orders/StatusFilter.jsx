@@ -6,11 +6,23 @@ function StatusFilter({ value, onChange }) {
       className="border rounded-lg px-4 py-2"
     >
       <option value="All">All Status</option>
-      <option value="Pending">Pending</option>
-      <option value="Processing">Processing</option>
-      <option value="Shipped">Shipped</option>
-      <option value="Delivered">Delivered</option>
-      <option value="Cancelled">Cancelled</option>
+
+      <option value="CREATED">Created</option>
+      <option value="CONFIRMED">Confirmed</option>
+      <option value="PROCESSING">Processing</option>
+      <option value="PACKAGED">Packaged</option>
+      <option value="PICKED_UP">Picked Up</option>
+      <option value="AT_ORIGIN_HUB">At Origin Hub</option>
+      <option value="IN_TRANSIT">In Transit</option>
+      <option value="AT_DESTINATION_HUB">
+        At Destination Hub
+      </option>
+      <option value="OUT_FOR_DELIVERY">
+        Out For Delivery
+      </option>
+      <option value="DELIVERED">Delivered</option>
+      <option value="CANCELLED">Cancelled</option>
+      <option value="FAILED">Failed</option>
     </select>
   );
 }

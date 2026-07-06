@@ -37,25 +37,28 @@ export const createOrder = async (orderData) => {
 
     // 6. Build final order object
     const order = {
-        orderId,
+      orderId,
 
-        externalOrderId: orderData.externalOrderId || null,
+      customerId: orderData.customerId,
 
-        customerId: orderData.customerId,
+      items: orderData.items,
 
-        items: orderData.items,
+      subtotal,
+      tax,
+      shippingCost,
+      totalAmount,
 
-        subtotal,
-        tax,
-        shippingCost,
-        totalAmount,
+      shippingAddress: orderData.shippingAddress,
 
-        shippingAddress: orderData.shippingAddress,
+      source: orderData.source || "SYNC",
 
-        source: orderData.source || "SYNC",
+      status: "CREATED",
+    };
 
-        status: "CREATED",
-        };
+      // Only for online orders
+      if (orderData.externalOrderId) {
+        order.externalOrderId = orderData.externalOrderId;
+      }
 
     // 7. Save to database
     const createdOrder = await orderRepository.createOrder(order);
@@ -88,7 +91,7 @@ export const getOrderById = async (orderId) => {
  */
 export const getAllOrders = async (query) => {
   const page = parseInt(query.page) || 1;
-  const limit = parseInt(query.limit) || 10;
+  const limit = parseInt(query.limit) || 100;
 
   const skip = (page - 1) * limit;
 
