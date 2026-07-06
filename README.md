@@ -7,7 +7,6 @@
 ![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-231F20?style=for-the-badge&logo=apachekafka&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 
 
@@ -137,8 +136,7 @@ The Notification Service consumes Kafka events and stores notifications in the d
 
 ## Sync Service
 
-The Sync Service synchronizes order data with external systems through dedicated APIs. It consumes relevant Kafka events, transforms the data when required, and sends it to external platforms to maintain consistency across systems.
-
+The Sync Service synchronizes order data with external systems through dedicated APIs.
 ---
 
 # 📨 Apache Kafka
@@ -194,7 +192,7 @@ Instead of relying on direct service-to-service API calls, producers publish eve
 
 The complete application is containerized using **Docker**, with each microservice running in its own isolated container.
 
-Docker Compose orchestrates the frontend, API Gateway, all microservices, Kafka, Zookeeper, MongoDB, and supporting infrastructure, enabling the entire application to be started using a single command.
+Docker Compose orchestrates the frontend, API Gateway, all microservices, Kafka, MongoDB, and supporting infrastructure, enabling the entire application to be started using a single command.
 
 ---
 
@@ -225,7 +223,6 @@ Docker Compose orchestrates the frontend, API Gateway, all microservices, Kafka,
 ## Messaging
 
 - Apache Kafka
-- Zookeeper
 
 ## DevOps
 
@@ -250,7 +247,7 @@ Docker Compose orchestrates the frontend, API Gateway, all microservices, Kafka,
 
 The login page allows users to securely authenticate using their credentials.
 
-![Login](screenshots/login.png)
+![Login](Screenshots/login.png)
 
 ---
 
@@ -258,7 +255,7 @@ The login page allows users to securely authenticate using their credentials.
 
 The dashboard provides an overview of the system, displaying key information and quick navigation to different modules.
 
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](Screenshots/dashboard.png)
 
 ---
 
@@ -266,7 +263,7 @@ The dashboard provides an overview of the system, displaying key information and
 
 The products page displays all available products and allows users to browse product information.
 
-![Products](screenshots/products.png)
+![Products](Screenshots/products.png)
 
 ---
 
@@ -274,7 +271,7 @@ The products page displays all available products and allows users to browse pro
 
 The inventory page enables administrators to monitor stock levels, reserve inventory, restock products, and manage inventory records.
 
-![Inventory](screenshots/inventory.png)
+![Inventory](Screenshots/inventory.png)
 
 ---
 
@@ -282,7 +279,7 @@ The inventory page enables administrators to monitor stock levels, reserve inven
 
 The orders page allows users to create, view, and manage customer orders while tracking their current status.
 
-![Orders](screenshots/orders.png)
+![Orders](Screenshots/orders.png)
 
 ---
 
@@ -290,7 +287,7 @@ The orders page allows users to create, view, and manage customer orders while t
 
 The shipment module displays shipment details and tracking information throughout the delivery lifecycle.
 
-![Shipment](screenshots/shipment.png)
+![Shipment](Screenshots/shipment.png)
 
 ---
 
@@ -298,7 +295,7 @@ The shipment module displays shipment details and tracking information throughou
 
 The profile page allows users to view and manage their account information.
 
-![Profile](screenshots/profile.png)
+![Profile](Screenshots/profile.png)
 
 ---
 
@@ -306,7 +303,7 @@ The profile page allows users to view and manage their account information.
 
 The Website Orders page displays orders synchronized with the external system through the Sync Service.
 
-![Website Orders](screenshots/website_orders.png)
+![Website Orders](Screenshots/website_orders.png)
 
 
 # 📂 Project Structure
@@ -790,10 +787,7 @@ The current implementation provides a robust foundation for an event-driven Orde
 
 This project was developed to explore modern backend development using microservices and event-driven architecture.
 
-- **Nidhi**
-- **Ashika**
-
 - [Nidhi Gurjar](https://github.com/Nidhi-bit-ai)
-- [Ashika](https://github.com/<Ashika-GitHub-Username>)
+- [Ashika](https://github.com/A-shika)
 
 
