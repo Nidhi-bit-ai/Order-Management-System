@@ -303,7 +303,7 @@ The profile page allows users to view and manage their account information.
 
 The Website Orders page displays orders synchronized with the external system through the Sync Service.
 
-![Website Orders](Screenshots/website_orders.png)
+![Website Orders](Screenshots/Website_orders.png)
 
 
 # 📂 Project Structure
