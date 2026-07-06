@@ -230,6 +230,49 @@ services:
       - oms-network
 
 
+  gateway:
+    build:
+      context: ./gateway
+
+    container_name: oms-gateway
+
+    restart: unless-stopped
+
+    ports:
+      - "5000:5000"
+
+    env_file:
+      - ./gateway/.env
+
+    depends_on:
+      - auth-service
+      - order-service
+      - inventory-service
+      - shipment-service
+      - notification-service
+      - sync-service
+
+    networks:
+      - oms-network
+
+
+  frontend:
+    build:
+      context: ./frontend
+
+    container_name: oms-frontend
+
+    restart: unless-stopped
+
+    ports:
+      - "3000:80"
+
+    depends_on:
+      - gateway
+
+    networks:
+      - oms-network
+
 networks:
   oms-network:
     driver: bridge
